@@ -14,8 +14,8 @@ vim.keymap.set("n", "<leader>f", function()
     vim.lsp.buf.format()
 end, { desc = '[f]ormat current buffer' })
 vim.keymap.set("n", "<leader>fs", function()
-    vim.cmd("w")
     vim.lsp.buf.format()
+    vim.cmd("w")
 end
 , { desc = "[f]ormat and [s]ave the current buffer" })
 
