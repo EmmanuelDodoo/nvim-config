@@ -9,6 +9,10 @@ vim.keymap.set("n", "<leader>sq", function()
 end
 , { desc = "[s]ave and [q]uit the current buffer" })
 
+-- Redo
+vim.keymap.set('n', "U", "<C-r>")
+vim.keymap.set('v', "U", "<C-r>")
+
 -- Format
 vim.keymap.set("n", "<leader>f", function()
     vim.lsp.buf.format()
