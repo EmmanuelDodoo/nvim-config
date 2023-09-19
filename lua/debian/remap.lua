@@ -3,11 +3,11 @@ vim.keymap.set("n", "<leader>pd", vim.cmd.Ex)
 
 -- Save
 vim.keymap.set("n", "<leader>s", vim.cmd.w, { desc = "[s]ave the current buffer" })
-vim.keymap.set("n", "<leader>sq", function()
+vim.keymap.set("n", "<leader>se", function()
     vim.cmd("w")
     vim.cmd("q")
 end
-, { desc = "[s]ave and [q]uit the current buffer" })
+, { desc = "[s]ave and [e]xit" })
 
 -- Redo
 vim.keymap.set('n', "U", "<C-r>")
