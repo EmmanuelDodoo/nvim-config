@@ -20,3 +20,7 @@ end, { desc = "[g]it [p]u[s]h" })
 vim.keymap.set("n", "<leader>gpl", function()
     vim.cmd("Git pull")
 end, { desc = "[g]it [p]ul[l]" })
+
+vim.keymap.set("n", "<leader>gra", function()
+    vim.cmd("Git reset")
+end, { desc = "[g]it [r]eset [a]ll" })
