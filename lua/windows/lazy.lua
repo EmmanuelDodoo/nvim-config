@@ -84,6 +84,8 @@ require("lazy").setup({
         -- Enable 'Lukas-reineke/indent-bLanRLine. nvim
         -- See :help indent_bLankLine. txt'
 
+        main = "ibl",
+
         opts = {
             char = "|",
             show_traiting_blankline_indent = false,
