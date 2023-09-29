@@ -8,6 +8,11 @@ vim.keymap.set("n", "<leader>se", function()
     vim.cmd("q")
 end
 , { desc = "[s]ave and [e]xit" })
+vim.keymap.set("n", "<leader>ss", function()
+    vim.cmd("w")
+    vim.cmd("so")
+end, { desc = "[s]ave and [s]ource current buffer" })
+
 
 -- Redo
 vim.keymap.set('n', "U", "<C-r>")

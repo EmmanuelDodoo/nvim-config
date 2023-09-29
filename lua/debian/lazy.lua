@@ -37,12 +37,18 @@ require("lazy").setup({
     -- Telescope icons
     { 'nvim-tree/nvim-web-devicons' },
 
-    -- Theme
+    -- Themes
     {
         "folke/tokyonight.nvim",
         lazy = false,
         priority = 1000,
         opts = {},
+    },
+    { "bluz71/vim-nightfly-colors", name = "nightfly", lazy = false, priority = 1000 },
+
+    {
+        'nvim-lualine/lualine.nvim',
+        requires = { 'nvim-tree/nvim-web-devicons', opt = true }
     },
 
     -- Git related plugins
@@ -77,6 +83,8 @@ require("lazy").setup({
         "lukas-reineke/indent-blankline.nvim",
         -- Enable 'Lukas-reineke/indent-bLanRLine. nvim
         -- See :help indent_bLankLine. txt'
+
+        main= "ibl",
 
         opts = {
             char = "|",
