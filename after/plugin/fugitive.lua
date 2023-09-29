@@ -13,7 +13,7 @@ vim.keymap.set("n", "<leader>gc", function()
     vim.cmd("Git commit")
 end, { desc = "[g]it commit" })
 
-vim.keymap.set("n", "leader>gps", function()
+vim.keymap.set("n", "<leader>gps", function()
     vim.cmd("Git push")
 end, { desc = "[g]it [p]u[s]h" })
 
