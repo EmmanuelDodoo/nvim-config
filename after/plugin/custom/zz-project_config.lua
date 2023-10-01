@@ -1,6 +1,6 @@
 -- Runs the config file in a project
 function Run_config(config)
-    local config_file = config or "config.nvim.lua"
+    local config_file = config or ".nvim/config.lua"
     local path = vim.fn.getcwd() .. "/" .. config_file
 
     -- Check if the Lua config exists and run it
@@ -9,4 +9,4 @@ function Run_config(config)
     end
 end
 
- Run_config()
+Run_config()
