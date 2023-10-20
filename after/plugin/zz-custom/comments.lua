@@ -8,8 +8,12 @@ local comment_chars = {
 local ending = {
     default = "",
     ocaml = "*)",
-    --     lua = "--"
+    -- lua = "--"
 }
+
+local function trim(str)
+    return str:match("^%s*(.-)%s*$")
+end
 
 function SingleLineComment(line_number, filetype)
     local filetype = filetype or vim.bo.filetype
@@ -34,15 +38,15 @@ function SingleLineComment(line_number, filetype)
         -- Remove comments
     elseif current_text:sub(starting_index + 1, starting_index + #cmt_char) == cmt_char then
         if ending[filetype] then
-            -- Lua includes the end of the range. The extra offset is for the whitespace
+            -- Lua includes the end of the range.
             local removed = current_text:sub(0, starting_index) ..
-                current_text:sub(starting_index + #cmt_char + 2, - #ending_char - 2)
-            vim.fn.setline(current_line, removed)
+                current_text:sub(starting_index + #cmt_char + 1, - #ending_char - 1)
+            vim.fn.setline(current_line, trim(removed))
         else
-            -- Lua includes the end of the range. The extra offset is for the whitespace
+            -- Lua includes the end of the range.
             local removed = current_text:sub(0, starting_index) ..
-                current_text:sub(starting_index + #cmt_char + 2)
-            vim.fn.setline(current_line, removed)
+                current_text:sub(starting_index + #cmt_char + 1)
+            vim.fn.setline(current_line, trim(removed))
         end
     end
 end
