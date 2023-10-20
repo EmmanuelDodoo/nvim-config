@@ -7,8 +7,8 @@ local comment_chars = {
 
 local ending = {
     default = "",
-    ocaml = "*)"
-    -- lua = "--"
+    ocaml = "*)",
+    --     lua = "--"
 }
 
 function SingleLineComment(line_number, filetype)
@@ -23,7 +23,7 @@ function SingleLineComment(line_number, filetype)
 
     -- Comment out text
     if current_text:sub(starting_index + 1, starting_index + #cmt_char) ~= cmt_char then
-        if ending_char then
+        if ending_char ~= "" then
             local commented = cmt_char .. " " .. current_text .. " " .. ending_char
             vim.fn.setline(current_line, commented)
         else
@@ -40,11 +40,8 @@ function SingleLineComment(line_number, filetype)
             vim.fn.setline(current_line, removed)
         else
             -- Lua includes the end of the range. The extra offset is for the whitespace
-            -- The line below is for dealing with trailing whitespace after uncommenting from
-            -- not the beginning of the line
-            local end_offset = starting_index == 0 and -2 or -1
             local removed = current_text:sub(0, starting_index) ..
-                current_text:sub(starting_index + #cmt_char + 2, end_offset)
+                current_text:sub(starting_index + #cmt_char + 2)
             vim.fn.setline(current_line, removed)
         end
     end
