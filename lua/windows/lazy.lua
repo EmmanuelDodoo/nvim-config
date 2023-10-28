@@ -87,8 +87,8 @@ require("lazy").setup({
         main = "ibl",
 
         opts = {
-            char = "|",
-            show_traiting_blankline_indent = false,
+            indent = { char = "|"},
+            whitespace = {remove_blankline_trail = false},
         },
     },
 
