@@ -1,5 +1,7 @@
 ---@diagnostic disable: undefined-global
 local lsp = require('lsp-zero')
+local lspconfig = require("lspconfig")
+local util = require("lspconfig/util")
 
 lsp.preset('recommended')
 
@@ -37,6 +39,10 @@ lsp.on_attach(function(client, bufnr)
     vim.keymap.set("n", "<leader>vr", function() vim.lsp.buf.references() end, opts)
     vim.keymap.set("n", "<leader>vrn", function() vim.lsp.buf.rename() end, opts)
     vim.keymap.set("i", "<C-h>", function() vim.lsp.buf.signature_help() end, opts)
+
+    if client.server_capabilities.inlayHintProvider then
+        vim.lsp.inlay_hint(bufnr, true)
+    end
 end)
 
 lsp.setup()
