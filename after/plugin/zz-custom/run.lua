@@ -11,6 +11,5 @@ function Run(cmd)
     end
 end
 
-
-vim.keymap.set("n", "<leader>r", [[:lua Run() <CR>]], {desc = "[r]un the build command for this project. Use vim.g.builder to set the command. Saves the current buffer"})
-
+vim.keymap.set("n", "<leader>b", [[:lua Run() <CR>]],
+    { desc = "[r]un the build command for this project. Use vim.g.builder to set the command. Saves the current buffer" })
