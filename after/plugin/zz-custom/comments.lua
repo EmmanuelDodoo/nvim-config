@@ -3,11 +3,13 @@ local comment_chars = {
     python = "#",
     lua = "--",
     ocaml = "(*",
+    css = "/*"
 }
 
 local ending = {
     default = "",
     ocaml = "*)",
+    css = "*/"
     -- lua = "--"
 }
 
