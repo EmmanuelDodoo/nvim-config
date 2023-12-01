@@ -32,3 +32,7 @@ vim.opt.colorcolumn = "80"
 
 -- Line length limit
 vim.opt.textwidth = 80
+
+-- Folds
+vim.opt.foldmethod = "expr"
+vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
