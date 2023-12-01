@@ -77,21 +77,6 @@ require("lazy").setup({
         }
     },
 
-    -- Indentation guides
-    {
-        -- Add indentation guides even on blank Lines
-        "lukas-reineke/indent-blankline.nvim",
-        -- Enable 'Lukas-reineke/indent-bLanRLine. nvim
-        -- See :help indent_bLankLine. txt'
-
-        main = "ibl",
-
-        opts = {
-            indent = { char = "|"},
-            whitespace = {remove_blankline_trail = false},
-        },
-    },
-
     -- Auto pairs
     {
         'windwp/nvim-autopairs',
