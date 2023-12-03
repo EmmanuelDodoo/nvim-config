@@ -3,9 +3,15 @@
 
 function Run(cmd)
     local cmd = cmd or vim.g.builder
+
+    local vim = vim
+
     if cmd and cmd ~= "" then
         vim.cmd("w")
-        print(vim.fn.system(cmd))
+
+        vim.cmd("vsplit | wincmd L | terminal ")
+        local command = ':call jobsend(b:terminal_job_id, "' .. cmd .. '\\n")'
+        vim.cmd(command)
     else
         print("No or empty command provided")
     end
