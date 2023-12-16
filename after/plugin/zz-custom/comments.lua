@@ -1,3 +1,4 @@
+local vim = vim
 local comment_chars = {
     default = "//",
     python = "#",
@@ -11,10 +12,6 @@ local ending = {
     -- lua = "--"
 }
 
-local function trim(str)
-    return str:match("^%s*(.-)%s*$")
-end
-
 function SingleLineComment(line_number, filetype)
     local filetype = filetype or vim.bo.filetype
     local cmt_char = comment_chars[filetype] or comment_chars["default"]
@@ -27,26 +24,30 @@ function SingleLineComment(line_number, filetype)
 
     -- Comment out text
     if current_text:sub(starting_index + 1, starting_index + #cmt_char) ~= cmt_char then
+        local prior_spacing = current_text:sub(1, starting_index)
+        local remainder = current_text:sub(starting_index + 1)
         if ending_char ~= "" then
-            local commented = cmt_char .. " " .. current_text .. " " .. ending_char
+            --             local commented = cmt_char .. " " .. current_text .. " " .. ending_char
+            local commented = prior_spacing .. cmt_char .. " " .. remainder .. " " .. ending_char
             vim.fn.setline(current_line, commented)
         else
-            local commented = cmt_char .. " " .. current_text
+            --             local commented = cmt_char .. " " .. current_text
+            local commented = prior_spacing .. cmt_char .. " " .. remainder
             vim.fn.setline(current_line, commented)
         end
 
         -- Remove comments
     elseif current_text:sub(starting_index + 1, starting_index + #cmt_char) == cmt_char then
         if ending[filetype] then
-            -- Lua includes the end of the range.
+            -- Accounts for extra space before and after cmt_char
             local removed = current_text:sub(0, starting_index) ..
-                current_text:sub(starting_index + #cmt_char + 1, - #ending_char - 1)
-            vim.fn.setline(current_line, trim(removed))
+                current_text:sub(starting_index + #cmt_char + 2, - #ending_char - 2)
+            vim.fn.setline(current_line, removed)
         else
-            -- Lua includes the end of the range.
+            -- Accounts for extra space after cmt_char
             local removed = current_text:sub(0, starting_index) ..
-                current_text:sub(starting_index + #cmt_char + 1)
-            vim.fn.setline(current_line, trim(removed))
+                current_text:sub(starting_index + #cmt_char + 2)
+            vim.fn.setline(current_line, removed)
         end
     end
 end
