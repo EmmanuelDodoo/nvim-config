@@ -40,6 +40,14 @@ lsp.on_attach(function(client, bufnr)
     vim.keymap.set("n", "<leader>vrn", function() vim.lsp.buf.rename() end, opts)
     vim.keymap.set("i", "<C-h>", function() vim.lsp.buf.signature_help() end, opts)
 
+    vim.keymap.set("n", "<leader>en", function()
+        vim.diagnostic.goto_next({ severity = vim.diagnostic.severity.ERROR })
+    end, { desc = "Go to the next Error " })
+
+    vim.keymap.set("n", "<leader>ep", function()
+        vim.diagnostic.goto_prev({ severity = vim.diagnostic.severity.ERROR })
+    end, { desc = "Go to previous Error" })
+
     if client.server_capabilities.inlayHintProvider then
         vim.lsp.inlay_hint(bufnr, true)
     end
