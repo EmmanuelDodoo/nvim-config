@@ -62,7 +62,11 @@ vim.keymap.set("v", "<leader>p", "\"+p")
 vim.keymap.set("n", "<C-f>", "<cmd>silent !tmux neww tmux-sessionizer<CR>")
 
 -- Find and replace current word across file
-vim.keymap.set("n", "<leader>r", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
+vim.keymap.set("n", "<leader>r", [[:let @/='\V\<' . escape(expand('<cword>'), '\') . '\>'<CR>:noh<CR>]],
+    { desc = "[f]in[d] the word under the cursor" })
+
+-- Search the current word under the cursor
+vim.keymap.set("n", "<leader>fd", [[:let @/='\V\<' . escape(expand('<cword>'), '\') . '\>'<CR>:noh<CR>]])
 
 vim.keymap.set("n", "<leader><leader>", function()
     vim.cmd("so")
