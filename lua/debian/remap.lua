@@ -81,3 +81,6 @@ end, { desc = "open a new window [t]er[m]inal to the right" })
 
 -- Exit insert mode in the terminal
 vim.keymap.set("t", '<Esc>', '<C-\\><C-n>')
+
+-- For marks
+vim.keymap.set("n", "'", "`")
