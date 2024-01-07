@@ -51,6 +51,8 @@ require("lazy").setup({
         requires = { 'nvim-tree/nvim-web-devicons', opt = true }
     },
 
+    { "bluz71/vim-moonfly-colors",  name = "moonfly",  lazy = false, priority = 1000 },
+
     -- Git related plugins
     { 'tpope/vim-fugitive' },
     { 'tpope/vim-rhubarb' },
