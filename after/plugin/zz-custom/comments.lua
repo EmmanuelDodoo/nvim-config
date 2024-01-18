@@ -6,7 +6,7 @@ local comment_chars = {
     ocaml = "(*",
     css = "/*",
     html = "<!--",
-    bash = "#"
+    sh = "#"
 }
 
 local ending = {
