@@ -5,7 +5,8 @@ local comment_chars = {
     lua = "--",
     ocaml = "(*",
     css = "/*",
-    html = "<!--"
+    html = "<!--",
+    bash = "#"
 }
 
 local ending = {
