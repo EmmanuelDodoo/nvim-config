@@ -1,3 +1,5 @@
+local vim = vim
+
 vim.g.mapleader = " "
 vim.keymap.set("n", "<leader>pd", vim.cmd.Ex)
 
@@ -82,6 +84,12 @@ end, { desc = "open a new window [t]er[m]inal to the right" })
 
 -- Exit insert mode in the terminal
 vim.keymap.set("t", '<Esc>', '<C-\\><C-n>')
+
+-- Close next window
+vim.keymap.set("n", "<leader>cl", function()
+    vim.cmd("wincmd w")
+    vim.cmd("q")
+end, { desc = "Close the next window" })
 
 -- For marks
 vim.keymap.set("n", "'", "`")
