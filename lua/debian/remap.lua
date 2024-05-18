@@ -1,3 +1,5 @@
+local vim = vim
+
 vim.g.mapleader = " "
 vim.keymap.set("n", "<leader>pd", vim.cmd.Ex)
 
@@ -66,7 +68,8 @@ vim.keymap.set("n", "<leader>r", [[:let @/='\V\<' . escape(expand('<cword>'), '\
     { desc = "[f]in[d] the word under the cursor" })
 
 -- Search the current word under the cursor
-vim.keymap.set("n", "<leader>fd", [[:let @/='\V\<' . escape(expand('<cword>'), '\') . '\>'<CR>:noh<CR>]])
+vim.keymap.set("n", "<leader>fd", [[:let @/='\V\<' . escape(expand('<cword>'), '\') . '\>'<CR>:noh<CR>]],
+    { desc = "[f]in[d] the word under the cursor" })
 
 vim.keymap.set("n", "<leader><leader>", function()
     vim.cmd("so")
@@ -81,3 +84,12 @@ end, { desc = "open a new window [t]er[m]inal to the right" })
 
 -- Exit insert mode in the terminal
 vim.keymap.set("t", '<Esc>', '<C-\\><C-n>')
+
+-- Close next window
+vim.keymap.set("n", "<leader>cl", function()
+    vim.cmd("wincmd w")
+    vim.cmd("q")
+end, { desc = "Close the next window" })
+
+-- For marks
+vim.keymap.set("n", "'", "`")
