@@ -49,7 +49,7 @@ lsp.on_attach(function(client, bufnr)
     end, { desc = "Go to previous Error" })
 
     if client.server_capabilities.inlayHintProvider then
-        vim.lsp.inlay_hint(bufnr, true)
+        vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
     end
 end)
 
