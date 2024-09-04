@@ -13,7 +13,7 @@ local ending = {
     default = "",
     ocaml = "*)",
     css = "*/",
-    html = "-->"
+    html = "-->",
     -- lua = "--"
 }
 
@@ -43,15 +43,36 @@ function SingleLineComment(line_number, filetype)
 
         -- Remove comments
     elseif current_text:sub(starting_index + 1, starting_index + #cmt_char) == cmt_char then
+        -- Accounts for extra space after cmt_char
+        local space_after = current_text:sub(starting_index + #cmt_char + 1, starting_index + #cmt_char + 1) == " "
+
         if ending[filetype] then
-            -- Accounts for extra space before and after cmt_char
+            -- Accounts for extra space before ending cmt_char
+            local space_before = current_text:sub(- #ending_char - 1):sub(1, 1) == " "
+
+            local beg_space_offset = 1
+            local end_space_offset = 1
+
+            if space_after then
+                beg_space_offset = 2
+            end
+
+            if space_before then
+                end_space_offset = 2
+            end
+
             local removed = current_text:sub(0, starting_index) ..
-                current_text:sub(starting_index + #cmt_char + 2, - #ending_char - 2)
+                current_text:sub(starting_index + #cmt_char + beg_space_offset, - #ending_char - end_space_offset)
             vim.fn.setline(current_line, removed)
         else
-            -- Accounts for extra space after cmt_char
+            local space_offset = 1
+
+            if space_after then
+                space_offset = 2
+            end
+
             local removed = current_text:sub(0, starting_index) ..
-                current_text:sub(starting_index + #cmt_char + 2)
+                current_text:sub(starting_index + #cmt_char + space_offset)
             vim.fn.setline(current_line, removed)
         end
     end
