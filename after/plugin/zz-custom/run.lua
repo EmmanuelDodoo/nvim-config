@@ -1,13 +1,16 @@
 -- This is for running things like build commands without having to
 -- open a terminal and run from there
+local vim = vim
 
 function Run(cmd)
     local cmd = cmd or vim.g.builder
 
-    local vim = vim
-
     if cmd and cmd ~= "" then
-        vim.cmd("w")
+        local buf_is_modifiable = vim.api.nvim_get_option_value("modifiable", { buf = 0 })
+
+        if buf_is_modifiable then
+            vim.cmd("w")
+        end
 
         vim.cmd("vsplit | wincmd L | terminal ")
         local command = ':call jobsend(b:terminal_job_id, "' .. cmd .. '\\n")'
