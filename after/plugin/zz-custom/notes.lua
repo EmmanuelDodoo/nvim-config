@@ -50,7 +50,10 @@ function M.open()
     end
 
     local note_path = M.path .. filename
-    local content = vim.fn.readfile(note_path)
+    local content = {}
+    if vim.loop.fs_stat(note_path) ~= nil then
+        content = vim.fn.readfile(note_path)
+    end
 
     local title = vim.fn.fnamemodify(curr_project, ":t"):gsub("^%l", string.upper) .. " Notes"
 
