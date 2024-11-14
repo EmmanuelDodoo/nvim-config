@@ -1,29 +1,45 @@
 ---@diagnostic disable: undefined-global
+vim.opt.signcolumn = 'yes'
 local lsp = require('lsp-zero')
-local lspconfig = require("lspconfig")
-local util = require("lspconfig/util")
 
-lsp.preset('recommended')
-
-lsp.ensure_installed({
-    'tsserver',
-    'eslint',
-    'rust_analyzer',
-    'lua_ls',
-    --'ocamllsp',
+require('mason').setup()
+require("mason-lspconfig").setup({
+    ensure_installed = {
+        "lua_ls",
+        "rust_analyzer",
+        "ocamllsp",
+        "pylsp",
+        "ts_ls",
+        "eslint"
+    },
+    handlers = {
+        function(server_name)
+            require('lspconfig')[server_name].setup({})
+        end,
+    }
 })
 
 local cmp = require('cmp')
+local cmp_format = lsp.cmp_format()
 local cmp_select = { behavior = cmp.SelectBehavior.Select }
-local cmp_mappings = lsp.defaults.cmp_mappings({
-    -- Previous on completion list
-    ['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
-    -- Next on completion list
-    ['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
-    -- Accept completion
-    ['<C-y>'] = cmp.mapping.confirm({ select = true }),
-    -- Start the completion
-    ['<C-Space>'] = cmp.mapping.complete(),
+cmp.setup({
+    sources = {
+        { name = 'nvim_lsp' },
+    },
+    mapping = cmp.mapping.preset.insert({
+        -- Previous on completion list
+        ['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
+        -- Next on completion list
+        ['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
+        -- Accept completion
+        ['<C-y>'] = cmp.mapping.confirm({ select = true }),
+        -- Start the completion
+        ['<C-Space>'] = cmp.mapping.complete(),
+        -- Scroll documentation window
+        ['<C-u>'] = cmp.mapping.scroll_docs(-4),
+        ['<C-d>'] = cmp.mapping.scroll_docs(4),
+    }),
+    formatting = cmp_format,
 })
 
 lsp.on_attach(function(client, bufnr)
@@ -40,17 +56,23 @@ lsp.on_attach(function(client, bufnr)
     vim.keymap.set("n", "<leader>vrn", function() vim.lsp.buf.rename() end, opts)
     vim.keymap.set("i", "<C-h>", function() vim.lsp.buf.signature_help() end, opts)
 
+    -- Move to next error
     vim.keymap.set("n", "<leader>en", function()
         vim.diagnostic.goto_next({ severity = vim.diagnostic.severity.ERROR })
     end, { desc = "Go to the next Error " })
 
+    -- Move to previous error
     vim.keymap.set("n", "<leader>ep", function()
         vim.diagnostic.goto_prev({ severity = vim.diagnostic.severity.ERROR })
     end, { desc = "Go to previous Error" })
 
+    -- Turn on inlay hinting
     if client.server_capabilities.inlayHintProvider then
         vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
     end
 end)
 
-lsp.setup()
+lsp.setup({
+    lsp_attach = on_attach,
+    capabilities = require("cmp_nvim_lsp").default_capabilities()
+})
