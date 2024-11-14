@@ -72,6 +72,8 @@ require("lazy").setup({
             { 'williamboman/mason.nvim' },           -- Optional
             { 'williamboman/mason-lspconfig.nvim' }, -- Optional
 
+            {'kevinhwang91/nvim-ufo', dependencies = 'kevinhwang91/promise-async'},
+
             -- Autocompletion
             { 'hrsh7th/nvim-cmp' },     -- Required
             { 'hrsh7th/cmp-nvim-lsp' }, -- Required
