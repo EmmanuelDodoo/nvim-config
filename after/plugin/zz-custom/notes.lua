@@ -1,9 +1,10 @@
 local vim = vim
 local api = vim.api
 local M = {}
+local dir_sep = package.config:sub(1, 1)
 
 -- Storage path
-M.path = vim.fn.stdpath("data") .. '/notes/'
+M.path = vim.fn.stdpath("data") .. dir_sep .. 'notes' .. dir_sep
 
 -- Create path if it doesn't exist
 vim.fn.mkdir(M.path, "p")
@@ -34,9 +35,14 @@ end
 
 
 function M.open()
+    local is_windows = dir_sep == '\\'
     local curr_project = vim.fn.getcwd()
 
-    local filename = curr_project:gsub("/", '_') .. '_notes.txt'
+    local filename = curr_project:gsub(dir_sep, '_') .. '_notes.txt'
+
+    if is_windows then
+        filename = filename:sub(3)
+    end
 
     local note_path = M.path .. filename
 
