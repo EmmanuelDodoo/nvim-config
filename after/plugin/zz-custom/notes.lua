@@ -1,7 +1,7 @@
 local vim = vim
-local api = vim.api
-local M = {}
 local dir_sep = package.config:sub(1, 1)
+
+local M = {}
 
 -- Storage path
 M.path = vim.fn.stdpath("data") .. dir_sep .. 'notes' .. dir_sep
@@ -9,30 +9,35 @@ M.path = vim.fn.stdpath("data") .. dir_sep .. 'notes' .. dir_sep
 -- Create path if it doesn't exist
 vim.fn.mkdir(M.path, "p")
 
-local function Open_Float(title)
-    local buf = api.nvim_create_buf(false, false)
-
-    local width = 50
+local function create_float(title)
+    local popup = require("plenary").popup
+    local width = 60
     local height = 25
 
-    local ui = api.nvim_list_uis()[1]
+    local borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" }
+    local bufnr = vim.api.nvim_create_buf(false, false)
 
-    local opts = {
-        relative = 'editor',
-        width = width,
-        height = height,
-        row = (ui.height / 2) - (height / 2),
-        col = (ui.width / 2) - (width / 2),
-        anchor = 'NW',
-        style = 'minimal',
-        border = 'double',
+    local win_id, win = popup.create(bufnr, {
         title = title,
-        title_pos = 'center'
+        highlight = "HarpoonWindow",
+        line = math.floor(((vim.o.lines - height) / 2) - 1),
+        col = math.floor((vim.o.columns - width) / 2),
+        minwidth = width,
+        minheight = height,
+        borderchars = borderchars,
+    })
+
+    vim.api.nvim_win_set_option(
+        win.border.win_id,
+        "winhl",
+        "Normal:Folded"
+    )
+
+    return {
+        bufn = bufnr,
+        win_id = win_id,
     }
-
-    return api.nvim_open_win(buf, true, opts)
 end
-
 
 function M.open()
     local is_windows = dir_sep == '\\'
@@ -45,12 +50,45 @@ function M.open()
     end
 
     local note_path = M.path .. filename
+    local content = vim.fn.readfile(note_path)
 
-    local title = vim.fn.fnamemodify(curr_project, ":t") .. " Notes"
+    local title = vim.fn.fnamemodify(curr_project, ":t"):gsub("^%l", string.upper) .. " Notes"
 
-    local _ = Open_Float(title)
 
-    vim.cmd('e ' .. note_path)
+    local float = create_float(title)
+    local bufn = float.bufn
+    local win_id = float.win_id
+
+    vim.api.nvim_win_set_option(win_id, "number", true)
+    vim.api.nvim_buf_set_name(bufn, "notes-buffer")
+    vim.api.nvim_buf_set_text(bufn, 0, 0, -1, -1, content)
+    vim.api.nvim_win_set_cursor(win_id, { 1, 1 })
+    vim.api.nvim_buf_set_option(bufn, 'modified', false)
+    vim.api.nvim_buf_set_option(bufn, "filetype", "notes")
+    vim.api.nvim_buf_set_option(bufn, "buftype", "acwrite")
+    vim.api.nvim_buf_set_option(bufn, "bufhidden", "delete")
+
+    vim.api.nvim_create_autocmd("BufWriteCmd", {
+        buffer = bufn,
+        callback = function()
+            local is_modified = vim.api.nvim_buf_get_option(bufn, 'modified')
+            if is_modified then
+                local notes = vim.api.nvim_buf_get_text(bufn, 0, 0, -1, -1, {})
+                local success = vim.fn.writefile(notes, note_path)
+
+                if success == 0 then
+                    -- Mark buffer as not modified after successful write
+                    vim.api.nvim_buf_set_option(bufn, 'modified', false)
+                else
+                    print("Save failed")
+                end
+            end
+        end,
+    })
+
+    vim.keymap.set("n", "q", function()
+        vim.cmd("wq")
+    end, { silent = true, buffer = bufn })
 end
 
 vim.keymap.set("n", "<leader>n", M.open, { desc = "Open the notes for this project" })
