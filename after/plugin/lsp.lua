@@ -9,7 +9,7 @@ require("mason-lspconfig").setup({
         "rust_analyzer",
         "ocamllsp",
         "pylsp",
-        "tsserver",
+        "ts_ls",
         "eslint"
     },
     handlers = {
