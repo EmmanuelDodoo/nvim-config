@@ -10,3 +10,15 @@ function Run_config(config)
 end
 
 Run_config()
+
+-- Format Folding
+if vim.g.format_fold then
+    vim.keymap.set("n", "<leader>f", function()
+        Format_fold()
+    end)
+
+    vim.keymap.set("n", "<leader>fs", function()
+        Format_fold()
+        vim.cmd("w")
+    end)
+end
