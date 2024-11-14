@@ -85,6 +85,17 @@ end, { desc = "open a new window [t]er[m]inal to the right" })
 -- Exit insert mode in the terminal
 vim.keymap.set("t", '<Esc>', '<C-\\><C-n>')
 
+-- Automatically close terminal process when terminal buffer is closed
+vim.api.nvim_create_autocmd("BufWinLeave", {
+    pattern = "term://*",
+    callback = function()
+        local terminal_job_id = vim.b.terminal_job_id
+        if terminal_job_id then
+            vim.fn.jobstop(terminal_job_id)
+        end
+    end
+})
+
 -- Close next window
 vim.keymap.set("n", "<leader>cl", function()
     vim.cmd("wincmd w")

@@ -3,7 +3,7 @@ local notify = require("notify")
 
 notify.setup({
     stages = "fade",
-    timeout = 500
+    timeout = 0
 })
 
 local function RecallPreviousNotification()

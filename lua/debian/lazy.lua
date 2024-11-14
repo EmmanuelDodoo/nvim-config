@@ -63,7 +63,7 @@ require("lazy").setup({
     -- LSP Zero
     {
         'VonHeikemen/lsp-zero.nvim',
-        branch = 'v2.x',
+        branch = 'v4.x',
         dependencies = {
             -- LSP Support
             {
@@ -71,6 +71,8 @@ require("lazy").setup({
             },                                       -- Required
             { 'williamboman/mason.nvim' },           -- Optional
             { 'williamboman/mason-lspconfig.nvim' }, -- Optional
+
+            {'kevinhwang91/nvim-ufo', dependencies = 'kevinhwang91/promise-async'},
 
             -- Autocompletion
             { 'hrsh7th/nvim-cmp' },     -- Required
