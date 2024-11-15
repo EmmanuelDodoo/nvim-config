@@ -17,7 +17,7 @@ function Format_fold()
     local ufo = require('ufo')
 
     -- Store which folds are open
-    local opened_folds = {}
+    local closed_folds = {}
     local bufnr = vim.api.nvim_get_current_buf()
 
     -- Get all folds in the buffer
@@ -26,8 +26,8 @@ function Format_fold()
     for _, fold in ipairs(folds) do
         local start_line = fold.startLine + 1
         -- print("" .. start_line .. ", " .. vim.fn.foldclosed(start_line))
-        if vim.fn.foldclosed(start_line) == -1 then
-            table.insert(opened_folds, start_line)
+        if vim.fn.foldclosed(start_line) ~= -1 then
+            table.insert(closed_folds, start_line)
         end
     end
 
@@ -39,9 +39,10 @@ function Format_fold()
     -- Wait a bit for UFO to create the folds
     vim.defer_fn(function()
         -- Open the folds that were previously open
-        for _, line in ipairs(opened_folds) do
+        for _, line in ipairs(closed_folds) do
+            print(line)
             -- local ok, _ = pcall(vim.cmd, string.format('%dfoldc', line))
-            pcall(vim.cmd, string.format('%dfoldo', line))
+            pcall(vim.cmd, string.format('%dfoldc', line))
         end
     end, 500)
 end
