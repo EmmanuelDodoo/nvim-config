@@ -7,7 +7,7 @@ require("mason-lspconfig").setup({
     ensure_installed = {
         "lua_ls",
         "rust_analyzer",
-        "ocamllsp",
+        -- "ocamllsp",
         "pylsp",
         "ts_ls",
         "eslint"
