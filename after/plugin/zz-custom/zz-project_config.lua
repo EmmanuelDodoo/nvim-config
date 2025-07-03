@@ -11,6 +11,10 @@ end
 
 Run_config()
 
+vim.keymap.set("n", "<C-c>", function()
+    vim.cmd("edit .nvim/config.lua")
+end)
+
 -- Format Folding
 if vim.g.format_fold then
     vim.keymap.set("n", "<leader>f", function()

@@ -26,7 +26,13 @@ require("lazy").setup({
 
     -- Tree sitter
     {
-        "nvim-treesitter/nvim-treesitter", build = ":TSUpdate"
+        "nvim-treesitter/nvim-treesitter",
+        dependencies = {
+            "OXY2DEV/markview.nvim",
+
+        },
+        lazy = false,
+        build = ":TSUpdate"
     },
 
 
@@ -72,7 +78,7 @@ require("lazy").setup({
             { 'williamboman/mason.nvim' },           -- Optional
             { 'williamboman/mason-lspconfig.nvim' }, -- Optional
 
-            {'kevinhwang91/nvim-ufo', dependencies = 'kevinhwang91/promise-async'},
+            { 'kevinhwang91/nvim-ufo',            dependencies = 'kevinhwang91/promise-async' },
 
             -- Autocompletion
             { 'hrsh7th/nvim-cmp' },     -- Required
@@ -102,5 +108,9 @@ require("lazy").setup({
             --   If not available, we use `mini` as the fallback
             "rcarriga/nvim-notify",
         }
-    }
+    },
+
+
+    { 'echasnovski/mini.icons', version = false },
+
 })

@@ -45,7 +45,24 @@ cmp.setup({
 lsp.on_attach(function(client, bufnr)
     local opts = { buffer = bufnr, remap = false }
 
-    vim.keymap.set("n", "gd", function() vim.lsp.buf.definition() end, opts)
+    vim.keymap.set("n", "gd", function()
+        local params = vim.lsp.util.make_position_params(0, "utf-8")
+        vim.lsp.buf_request(0, "textDocument/definition", params, function(err, result, _, _)
+            if err or not result then return end
+
+            local location = result[1] or result
+            local uri = location.uri or location.targetUri
+            local target_file = vim.uri_to_fname(uri)
+            local current_file = vim.api.nvim_buf_get_name(0)
+
+            if target_file ~= current_file then
+                vim.cmd("vsplit")
+            end
+
+            vim.lsp.util.show_document(location, "utf-8", { reuse_win = true, focus = true })
+        end)
+    end, opts)
+
     vim.keymap.set("n", "K", function() vim.lsp.buf.hover() end, opts)
     vim.keymap.set("n", "<leader>vws", function() vim.lsp.buf.workspace_symbol() end, opts)
     vim.keymap.set("n", "<leader>vd", function() vim.diagnostic.open_float() end, opts)
