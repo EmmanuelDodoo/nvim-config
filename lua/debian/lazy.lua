@@ -72,7 +72,7 @@ require("lazy").setup({
             { 'williamboman/mason.nvim' },           -- Optional
             { 'williamboman/mason-lspconfig.nvim' }, -- Optional
 
-            {'kevinhwang91/nvim-ufo', dependencies = 'kevinhwang91/promise-async'},
+            { 'kevinhwang91/nvim-ufo',            dependencies = 'kevinhwang91/promise-async' },
 
             -- Autocompletion
             { 'hrsh7th/nvim-cmp' },     -- Required
@@ -102,5 +102,18 @@ require("lazy").setup({
             --   If not available, we use `mini` as the fallback
             "rcarriga/nvim-notify",
         }
-    }
+    },
+
+    -- Markview
+    {
+        "OXY2DEV/markview.nvim",
+        lazy = false,
+        preview = {
+            icon_provider = "devicons", -- "mini" or "devicons"
+        }
+
+    },
+
+    { 'echasnovski/mini.icons', version = false },
+
 })
