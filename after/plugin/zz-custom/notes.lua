@@ -20,11 +20,11 @@ local function create_float(title)
     local win_id, win = popup.create(bufnr, {
         title = title,
         highlight = "HarpoonWindow",
-        line = math.floor(((vim.o.lines - height) / 2) - 1),
-        col = math.floor((vim.o.columns - width) / 2),
         minwidth = width,
         minheight = height,
         borderchars = borderchars,
+        focusable = true,
+        wrap = true,
     })
 
     vim.api.nvim_win_set_option(
@@ -63,11 +63,13 @@ function M.open()
     local win_id = float.win_id
 
     vim.api.nvim_win_set_option(win_id, "number", true)
+    vim.api.nvim_win_set_option(win_id, "relativenumber", true)
     vim.api.nvim_buf_set_name(bufn, "notes-buffer")
     vim.api.nvim_buf_set_text(bufn, 0, 0, -1, -1, content)
     vim.api.nvim_win_set_cursor(win_id, { 1, 1 })
     vim.api.nvim_buf_set_option(bufn, 'modified', false)
-    vim.api.nvim_buf_set_option(bufn, "filetype", "notes")
+    vim.api.nvim_buf_set_option(bufn, 'textwidth', 55)
+    vim.api.nvim_buf_set_option(bufn, "filetype", "text")
     vim.api.nvim_buf_set_option(bufn, "buftype", "acwrite")
     vim.api.nvim_buf_set_option(bufn, "bufhidden", "delete")
 
@@ -94,6 +96,6 @@ function M.open()
     end, { silent = true, buffer = bufn })
 end
 
-vim.keymap.set("n", "<leader>n", M.open, { desc = "Open the notes for this project" })
+vim.keymap.set("n", "<leader>n", M.open, { desc = "Open the [n]otes for this project" })
 
 return M

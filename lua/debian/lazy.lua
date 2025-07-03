@@ -26,7 +26,13 @@ require("lazy").setup({
 
     -- Tree sitter
     {
-        "nvim-treesitter/nvim-treesitter", build = ":TSUpdate"
+        "nvim-treesitter/nvim-treesitter",
+        dependencies = {
+            "OXY2DEV/markview.nvim",
+
+        },
+        lazy = false,
+        build = ":TSUpdate"
     },
 
 
@@ -104,15 +110,6 @@ require("lazy").setup({
         }
     },
 
-    -- Markview
-    {
-        "OXY2DEV/markview.nvim",
-        lazy = false,
-        preview = {
-            icon_provider = "devicons", -- "mini" or "devicons"
-        }
-
-    },
 
     { 'echasnovski/mini.icons', version = false },
 
