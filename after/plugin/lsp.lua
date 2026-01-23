@@ -1,64 +1,29 @@
 ---@diagnostic disable: undefined-global
-vim.opt.signcolumn = 'yes'
-local lsp = require('lsp-zero')
 
-require('mason').setup()
 require("mason-lspconfig").setup({
     ensure_installed = {
         "lua_ls",
         "rust_analyzer",
-        -- "ocamllsp",
         "pylsp",
         "ts_ls",
-        "eslint"
+        "eslint",
     },
-    automatic_enable = {
-        exclude = { "textlsp", }
-    }
-    -- handlers = {
-    --     function(server_name)
-    --         require('lspconfig')[server_name].setup({})
-    --     end,
-    -- }
+    automatic_installation = true,
+    automatic_enable = true,
 })
 
-
-require('lspconfig').textlsp.setup({
-    settings = {
-        textLSP = {
-            analysers = {
-                languagetool = {
-                    check_text = {
-                        on_change = false,
-                        on_open = true,
-                        on_save = true
-                    },
-                    enabled = true
-                },
-
-                ollama = {
-                    enabled = true,
-                    check_text = {
-                        on_open = false,
-                        on_save = true,
-                        on_change = false,
-                    },
-                    model = "phi3:3.8b", -- smaller but faster model
-                    max_token = 50,
-                },
-            }
-        }
-    }
-
-})
 
 local cmp = require('cmp')
-local cmp_format = lsp.cmp_format()
+local lspkind = require('lspkind')
 local cmp_select = { behavior = cmp.SelectBehavior.Select }
+
 cmp.setup({
-    sources = {
-        { name = 'nvim_lsp' },
-    },
+    sources = cmp.config.sources({
+        { name = "nvim_lsp" },
+        { name = "path" },
+    }, {
+        { name = "buffer", keyword_length = 3 },
+    }),
     mapping = cmp.mapping.preset.insert({
         -- Previous on completion list
         ['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
@@ -72,10 +37,17 @@ cmp.setup({
         ['<C-u>'] = cmp.mapping.scroll_docs(-4),
         ['<C-d>'] = cmp.mapping.scroll_docs(4),
     }),
-    formatting = cmp_format,
+    formatting = {
+        fields = { 'abbr', 'kind', 'menu' },
+        maxwidth = 50,
+        ellipsis_char = '...',
+        format = lspkind.cmp_format({
+            mode = "symbol_text"
+        })
+    },
 })
 
-lsp.on_attach(function(client, bufnr)
+local on_attach = function(client, bufnr)
     local opts = { buffer = bufnr, remap = false }
 
     vim.keymap.set("n", "gd", function()
@@ -120,9 +92,12 @@ lsp.on_attach(function(client, bufnr)
     if client.server_capabilities.inlayHintProvider then
         vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
     end
-end)
+end
 
-lsp.setup({
-    lsp_attach = on_attach,
-    capabilities = require("cmp_nvim_lsp").default_capabilities()
+vim.api.nvim_create_autocmd('LspAttach', {
+    group = vim.api.nvim_create_augroup('my.lsp', {}),
+    callback = function(args)
+        local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
+        on_attach(client, args.buf)
+    end,
 })

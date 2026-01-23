@@ -32,3 +32,10 @@ vim.opt.colorcolumn = "80"
 
 -- Line length limit
 vim.opt.textwidth = 80
+
+-- Folds
+vim.o.foldmethod = "expr"
+vim.o.foldenable = false
+vim.o.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+
+vim.opt.signcolumn = 'yes'

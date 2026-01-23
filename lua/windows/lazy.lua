@@ -72,26 +72,22 @@ require("lazy").setup({
     -- Harpoon
     { 'ThePrimeagen/harpoon' },
 
-    -- LSP Zero
+
     {
-        'VonHeikemen/lsp-zero.nvim',
-        branch = 'v4.x',
+        "mason-org/mason-lspconfig.nvim",
+
         dependencies = {
-            -- LSP Support
-            {
-                'neovim/nvim-lspconfig',
-            },                                       -- Required
-            { 'williamboman/mason.nvim' },           -- Optional
-            { 'williamboman/mason-lspconfig.nvim' }, -- Optional
-
-            { 'kevinhwang91/nvim-ufo',            dependencies = 'kevinhwang91/promise-async' },
-
-            -- Autocompletion
-            { 'hrsh7th/nvim-cmp' },     -- Required
-            { 'hrsh7th/cmp-nvim-lsp' }, -- Required
-            { 'L3MON4D3/LuaSnip' },     -- Required
-        }
+            { "mason-org/mason.nvim", opts = {} },
+            { "neovim/nvim-lspconfig" },
+        },
     },
+
+    -- LSP Snippets
+    { 'hrsh7th/nvim-cmp' },
+    { 'hrsh7th/cmp-nvim-lsp' },
+    { 'hrsh7th/cmp-buffer' },
+    { 'hrsh7th/cmp-path' },
+    { 'onsails/lspkind.nvim' },
 
     -- Auto pairs
     {
