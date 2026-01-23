@@ -12,11 +12,44 @@ require("mason-lspconfig").setup({
         "ts_ls",
         "eslint"
     },
-    handlers = {
-        function(server_name)
-            require('lspconfig')[server_name].setup({})
-        end,
+    automatic_enable = {
+        exclude = { "textlsp", }
     }
+    -- handlers = {
+    --     function(server_name)
+    --         require('lspconfig')[server_name].setup({})
+    --     end,
+    -- }
+})
+
+
+require('lspconfig').textlsp.setup({
+    settings = {
+        textLSP = {
+            analysers = {
+                languagetool = {
+                    check_text = {
+                        on_change = false,
+                        on_open = true,
+                        on_save = true
+                    },
+                    enabled = true
+                },
+
+                ollama = {
+                    enabled = true,
+                    check_text = {
+                        on_open = false,
+                        on_save = true,
+                        on_change = false,
+                    },
+                    model = "phi3:3.8b", -- smaller but faster model
+                    max_token = 50,
+                },
+            }
+        }
+    }
+
 })
 
 local cmp = require('cmp')

@@ -49,14 +49,20 @@ require("lazy").setup({
         priority = 1000,
         opts = {},
     },
-    { "bluz71/vim-nightfly-colors", name = "nightfly", lazy = false, priority = 1000 },
+    {
+        "bluz71/vim-nightfly-colors",
+        name = "nightfly",
+        commit = "fe3aaa3",
+        lazy = false,
+        priority = 1000
+    },
 
     {
         'nvim-lualine/lualine.nvim',
         requires = { 'nvim-tree/nvim-web-devicons', opt = true }
     },
 
-    { "bluz71/vim-moonfly-colors",  name = "moonfly",  lazy = false, priority = 1000 },
+    { "bluz71/vim-moonfly-colors", name = "moonfly", lazy = false, priority = 1000 },
 
     -- Git related plugins
     { 'tpope/vim-fugitive' },
